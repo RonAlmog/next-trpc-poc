@@ -10,6 +10,8 @@ const TodoList = ({
 }) => {
   const getTodos = trpc.getTodos.useQuery(undefined, {
     initialData: initialTodos,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
   const [content, setContent] = useState("");
   const addTodo = trpc.addTodo.useMutation({
