@@ -10,11 +10,38 @@ const TodoList = () => {
       getTodos.refetch();
     },
   });
+  const setDone = trpc.setDone.useMutation({
+    onSettled: () => {
+      getTodos.refetch();
+    },
+  });
   return (
-    <div>
-      <div>{JSON.stringify(getTodos.data)}</div>
+    <div className="bg-slate-200 w-full h-full mx-auto p-6">
+      <div className="text-black my-5 text-3xl bg-slate-100 p-2">
+        {getTodos?.data?.map((todo) => (
+          <div key={todo.id} className="flex gap-3 items-center">
+            <input
+              id={`check-${todo.id}`}
+              type="checkbox"
+              checked={!!todo.done}
+              style={{ zoom: 1.5 }}
+              onChange={async () => {
+                setDone.mutate({
+                  id: todo.id,
+                  done: todo.done ? 0 : 1,
+                });
+              }}
+            />
+            <label htmlFor={`check-${todo.id}`} className="text-black">
+              {todo.content}
+            </label>
+          </div>
+        ))}
+      </div>
       <div>
-        <label htmlFor="content">content:</label>
+        <label htmlFor="content" className="text-black">
+          content:
+        </label>
         <input
           type="text"
           id="content"
