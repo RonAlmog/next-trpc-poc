@@ -1,9 +1,16 @@
 "use client";
 import { trpc } from "../_trpc/client";
 import { useState } from "react";
+import { serverClient } from "../_trpc/serverClient";
 
-const TodoList = () => {
-  const getTodos = trpc.getTodos.useQuery();
+const TodoList = ({
+  initialTodos,
+}: {
+  initialTodos: Awaited<ReturnType<(typeof serverClient)["getTodos"]>>;
+}) => {
+  const getTodos = trpc.getTodos.useQuery(undefined, {
+    initialData: initialTodos,
+  });
   const [content, setContent] = useState("");
   const addTodo = trpc.addTodo.useMutation({
     onSettled: () => {

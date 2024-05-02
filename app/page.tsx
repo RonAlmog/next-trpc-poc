@@ -1,10 +1,11 @@
-import Image from "next/image";
+import { serverClient } from "./_trpc/serverClient";
 import TodoList from "./_components/todo-list";
 
-export default function Home() {
+export default async function Home() {
+  const todos = await serverClient.getTodos();
   return (
     <main className="max-w-3xl mx-auto mt-5">
-      <TodoList />
+      <TodoList initialTodos={todos} />
     </main>
   );
 }
